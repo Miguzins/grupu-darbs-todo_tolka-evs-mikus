@@ -9,25 +9,30 @@
     <title>to do list praktiskais</title>
 
     <style>
-    .card:hover {
-        box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-    }
+        .card:hover {
+            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+        }
 
-    .checked {
-        text-decoration: line-through;
-        color: gray;
-        opacity: 0.7;
+        /* Dizains kad izsvītrots */
+        .checked {
+            text-decoration: line-through;
+            color: gray;
+            opacity: 0.7;
+        }
 
-    }
+        /* Klikšķināms teksts */
+        .task-text {
+            cursor: pointer;
+            flex-grow: 1;
+        }
 
-    .task-text {
-    cursor: pointer;
-    flex-grow: 1;
-}
-
-</style>
-
+        /* Prioritāšu krāsas */
+        .badge.zema { background-color: #6c757d; }
+        .badge.videja { background-color: #0d6efd; }
+        .badge.svariga { background-color: #dc3545; }
+    </style>
 </head>
+
 <body class="bg-blue">
 <div class="container mt-5">
     <div class="card mx-auto" style="max-width: 670px;">
@@ -35,86 +40,99 @@
             <h3 class="text-center mb-3">Mani darbi</h3>
 
             <form>
-                <div class="control-group">
-                    <div class="input-group mb-3">
-                        <input type="text" class="form-control" id="teksts" name="teksts" placeholder="Ieraksti darbu...">
-                        <button type="button" class="btn btn-primary" onclick="addTask()">Pievienot</button>
-                    </div>
-                    <ul id="task-list" class="list-group"></ul>
+                <div class="input-group mb-3">
+                    <input type="text" class="form-control" id="teksts" placeholder="Ieraksti darbu...">
+
+                    <select class="form-select" id="priority">
+                        <option value="zema">Zema</option>
+                        <option value="videja">Vidēja</option>
+                        <option value="svariga">SVARĪGA!</option>
+                    </select>
+
+                    <button type="button" class="btn btn-primary" onclick="addTask()">Pievienot</button>
                 </div>
+
+                <ul id="task-list" class="list-group"></ul>
             </form>
         </div>
     </div>
 </div>
 
 <script>
-    // local storage dati (Rūdolfs Č.)
+    // Local storage dati (R.Č.)
     let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
 
-    // ielade uzdevumu no local storage lai tas nepazud (Rūdolfs Č.)
-    tasks.forEach(text => {
-        createTaskLi(text);
-    });
+    // Ielāde no localStorage (R.Č.)
+tasks.forEach(task => {
+    // ja task ir string (vecais formāts), pārvēršam par objektu ar zemu prioritāti
+    if (typeof task === "string") {
+        const newTask = { text: task, priority: "zema" };
+        createTaskLi(newTask.text, newTask.priority);
+    } else {
+        // ja jau ir objekts (jaunais formāts)
+        createTaskLi(task.text, task.priority);
+    }
+});
+
+
 
     function addTask() {
         const input = document.getElementById("teksts");
+        const prioritySelect = document.getElementById("priority");
+
         const text = input.value.trim();
+        const priority = prioritySelect.value;
 
         if (text === "") return;
 
-        createTaskLi(text);
+        createTaskLi(text, priority);
 
-        tasks.push(text);
+        tasks.push({ text, priority });
         localStorage.setItem("tasks", JSON.stringify(tasks));
 
+
         input.value = "";
+        prioritySelect.value = "zema";
     }
 
-    function createTaskLi(text) {
+    function createTaskLi(text, priority) {
         const li = document.createElement("li");
         li.className = "list-group-item d-flex justify-content-between align-items-center";
 
         li.innerHTML = `
-            ${text}
+            <span class="task-text">
+                ${text}
+                <span class="badge ms-2 ${priority}">${priority}</span>
+            </span>
             <button class="btn btn-danger btn-sm" onclick="removeTask(this)">Dzēst</button>
         `;
 
         document.getElementById("task-list").appendChild(li);
     }
 
+
     function removeTask(button) {
-        const li = button.parentElement;
-        const text = li.firstChild.textContent.trim();
+    const li = button.parentElement;
+    const text = li.querySelector(".task-text").childNodes[0].textContent.trim();
 
-        tasks = tasks.filter(task => task !== text);
-        localStorage.setItem("tasks", JSON.stringify(tasks));
+    // filtrē tasks masīvu, atstājot tikai tos, kas nav dzēstie
+    tasks = tasks.filter(task => task.text !== text);
 
-        li.remove();
+    // saglabā localStorage
+    localStorage.setItem("tasks", JSON.stringify(tasks));
+
+    // izdzēs li no HTML
+    li.remove();
 }
 
-//Funkcija lai panem tikai darbina tekstu (R.Č.)
 
-function createTaskLi(text) {
-    const li = document.createElement("li");
-    li.className = "list-group-item d-flex justify-content-between align-items-center";
-
-    li.innerHTML = `
-        <span class="task-text">${text}</span>
-        <button class="btn btn-danger btn-sm" onclick="removeTask(this)">Dzēst</button>
-    `;
-
-    document.getElementById("task-list").appendChild(li);
-}
-
-//Izsvitro darbinu kam tikai uzpiests click (R.Č.)
-var list = document.getElementById("task-list");
-
-list.addEventListener("click", function (ev) {
-    if (ev.target.classList.contains("task-text")) {
-        ev.target.classList.toggle("checked");
-    }
-});
-
+    ///Izsvitro darbinu kam tikai uzpiests click (R.Č.)
+    var list = document.getElementById("task-list");
+    list.addEventListener("click", function (ev) {
+        if (ev.target.classList.contains("task-text")) {
+            ev.target.classList.toggle("checked");
+        }
+    });
 </script>
 
 </body>
