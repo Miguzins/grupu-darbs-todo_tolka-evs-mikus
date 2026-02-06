@@ -17,7 +17,14 @@
         text-decoration: line-through;
         color: gray;
         opacity: 0.7;
+
     }
+
+    .task-text {
+    cursor: pointer;
+    flex-grow: 1;
+}
+
 </style>
 
 </head>
@@ -85,9 +92,25 @@
         li.remove();
 }
 
+//Funkcija lai panem tikai darbina tekstu (R.Č.)
+
+function createTaskLi(text) {
+    const li = document.createElement("li");
+    li.className = "list-group-item d-flex justify-content-between align-items-center";
+
+    li.innerHTML = `
+        <span class="task-text">${text}</span>
+        <button class="btn btn-danger btn-sm" onclick="removeTask(this)">Dzēst</button>
+    `;
+
+    document.getElementById("task-list").appendChild(li);
+}
+
+//Izsvitro darbinu kam tikai uzpiests click (R.Č.)
 var list = document.getElementById("task-list");
+
 list.addEventListener("click", function (ev) {
-    if (ev.target.tagName === "LI") {
+    if (ev.target.classList.contains("task-text")) {
         ev.target.classList.toggle("checked");
     }
 });
@@ -96,3 +119,6 @@ list.addEventListener("click", function (ev) {
 
 </body>
 </html>
+<!--localStorage ir pārlūkprogrammas atmiņa, kurā var saglabāt datus ilgtermiņā lietotāja datorā.
+Atšķirībā no const un let, pēc F5 dati nepazūd, bet mainīgie katru reizi tiek izdzēsti, kad lapa tiek atsvaidzināta.
+Atšķirībā no parastiem mainīgajiem (let vai const), localStorage saglabā datus arī pēc lapas pārlādes (F5 nospiešanas), tāpēc tajā var glabāt darbu sarakstu, lai tas nepazustu.-->
