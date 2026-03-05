@@ -1,147 +1,204 @@
 <!--Autors:Mikus Tolkačevs
-    Versija: pirmā-->
-<!DOCTYPE html>
-<html lang="lv">
-<head>
-    <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <title>to do list praktiskais</title>
-
-    <style>
-        .card:hover {
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-        }
-
-        /* Dizains kad izsvītrots */
-        .checked {
-            text-decoration: line-through;
-            color: gray;
-            opacity: 0.7;
-        }
-
-        /* Klikšķināms teksts */
-        .task-text {
-            cursor: pointer;
-            flex-grow: 1;
-        }
-
-        /* Prioritāšu krāsas */
-        .badge.zema { background-color: #6c757d; }
-        .badge.videja { background-color: #0d6efd; }
-        .badge.svariga { background-color: #dc3545; }
-    </style>
-</head>
-
-<body class="bg-blue">
-<div class="container mt-5">
-    <div class="card mx-auto" style="max-width: 670px;">
-        <div class="card-body">
-            <h3 class="text-center mb-3">Mani darbi</h3>
-
-            <form>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" id="teksts" placeholder="Ieraksti darbu...">
-
-                    <select class="form-select" id="priority">
-                        <option value="zema">Zema</option>
-                        <option value="videja">Vidēja</option>
-                        <option value="svariga">SVARĪGA!</option>
-                    </select>
-                    <button type="button" class="btn btn-primary" onclick="addTask()">Pievienot</button>
-                </div>
-                <div class="input-group mb-3 ">
-                    <input type="text" class="form-control" id="teksts" placeholder="Meklēt uzdevumu..."><br>
-                        <button type="button" class="btn btn-outline-secondary" onclick="">Visi</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="">Aktīvie</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="">Pabeigtie</button>
-                </div>
-
-                <ul id="task-list" class="list-group"></ul>
-            </form>
+    Versija: pirmā
+    Trešais autors: Andrejs Šorecs V3-->
+    <!DOCTYPE html>
+    <html lang="lv">
+    <head>
+        <meta charset="UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+        <title>to do list praktiskais</title>
+    
+        <style>
+            .card:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            }
+    
+            /* Dizains kad izsvītrots */
+            .checked {
+                text-decoration: line-through;
+                color: gray;
+                opacity: 0.7;
+            }
+    
+            /* Klikšķināms teksts */
+            .task-text {
+                cursor: pointer;
+                flex-grow: 1;
+            }
+    
+            /* Prioritāšu krāsas */
+            .badge.zema { background-color: #6c757d; }
+            .badge.videja { background-color: #0d6efd; }
+            .badge.svariga { background-color: #dc3545; }
+        </style>
+    </head>
+    
+    <body class="bg-blue">
+    <div class="container mt-5">
+        <div class="card mx-auto" style="max-width: 670px;">
+            <div class="card-body">
+                <h3 class="text-center mb-3">Mani darbi</h3>
+    
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="teksts" placeholder="Ieraksti darbu...">
+    
+                        <select class="form-select" id="priority">
+                            <option value="zema">Zema</option>
+                            <option value="videja">Vidēja</option>
+                            <option value="svariga">SVARĪGA!</option>
+                        </select>
+                        <button type="button" class="btn btn-primary" onclick="addTask()">Pievienot</button>
+                    </div>
+                    <div class="input-group mb-3  ">
+                        <input type="text" class="form-control" id="tekstss" oninput="all()" placeholder="Meklēt uzdevumu..."><br>
+                            <button type="button" class="btn btn-outline-secondary" onclick="all()">Visi</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="">Aktīvie</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="">Pabeigtie</button>
+                    </div>
+    
+                    <ul id="task-list" class="list-group"></ul>
+                </form>
+            </div>
         </div>
     </div>
-</div>
+    
+    <script>
+        
+        function listdone(){
 
-<script>
-    // Local storage dati (R.Č.)
-    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+        }
 
-    // Ielāde no localStorage (R.Č.)
-tasks.forEach(task => {
-    // ja task ir string (vecais formāts), pārvēršam par objektu ar zemu prioritāti
-    if (typeof task === "string") {
-        const newTask = { text: task, priority: "zema" };
-        createTaskLi(newTask.text, newTask.priority);
-    } else {
-        // ja jau ir objekts (jaunais formāts)
-        createTaskLi(task.text, task.priority);
-    }
-});
+        function active(){
 
+        }
 
+        function all(){
+            var meklet = document.getElementById("tekstss").value;
+            var ul = document.querySelector("ul");
+            var li = document.getElementsByTagName("li");
 
-    function addTask() {
+            for(var i=0; i<li.length; i++){
+                var span = li[i].getElementsByTagName("span")[0];
+                if(span.innerHTML.toLocaleLowerCase().indexoff(meklet.toLocaleLowerCase()) > -1 ){
+                    li[i].style.display = "";
+                } else {
+                    li[i].style.display = "none";
+                }
+            }
+        }
+      
+      // LocalStorage data ieladesana
+        loadData();
+        function loadData() {
+          // parbaude ja localStorage nekas nav tad izejam so posmu lai nebutu kludas 
+          if (!localStorage.getItem("Jons2")) return;
+            let text = localStorage.getItem("Jons2");
+            let obj = JSON.parse(text);
+    
+            document.getElementById("task-list").innerHTML = "";
+    
+            obj.forEach(objekts => {
+                createTaskElement(objekts.text, objekts.priority, objekts.done);
+            });
+        }
+    
+    
+        //funkcija prieks pogas (Pievienot)
+      function addTask() {
         const input = document.getElementById("teksts");
-        const prioritySelect = document.getElementById("priority");
-
-        const text = input.value.trim();
-        const priority = prioritySelect.value;
-
-        if (text === "") return;
-
-        createTaskLi(text, priority);
-
-        tasks.push({ text, priority });
-        localStorage.setItem("tasks", JSON.stringify(tasks));
-
-
+        const priority = document.getElementById("priority").value;
+        const taskText = input.value.trim();
+    
+        if (taskText === "") {
+          alert("Ievadi uzdevumu!");
+          return;
+        }
+    
+        // pie veidosanas jauna taska pieskiram vinam tekstu, izveleto prioritati un false (izpildits darbs vai ne)
+        createTaskElement(taskText, priority, false);
+        saveTasks();
         input.value = "";
-        prioritySelect.value = "zema";
-    }
-
-    function createTaskLi(text, priority) {
+       
+      }
+    
+    
+      function createTaskElement(text, priority, done) {
         const li = document.createElement("li");
         li.className = "list-group-item d-flex justify-content-between align-items-center";
-
-        li.innerHTML = `
-            <span class="task-text">
-                ${text}
-                <span class="badge ms-2 ${priority}">${priority}</span>
-            </span>
-            <button class="btn btn-danger btn-sm" onclick="removeTask(this)">Dzēst</button>
-        `;
-
-        document.getElementById("task-list").appendChild(li);
-    }
-
-
-    function removeTask(button) {
-    const li = button.parentElement;
-    const text = li.querySelector(".task-text").childNodes[0].textContent.trim();
-
-    // filtrē tasks masīvu, atstājot tikai tos, kas nav dzēstie
-    tasks = tasks.filter(task => task.text !== text);
-
-    // saglabā localStorage
-    localStorage.setItem("tasks", JSON.stringify(tasks));
-
-    // izdzēs li no HTML
-    li.remove();
-}
-
-
-    ///Izsvitro darbinu kam tikai uzpiests click (R.Č.)
-    var list = document.getElementById("task-list");
-    list.addEventListener("click", function (ev) {
-        if (ev.target.classList.contains("task-text")) {
-            ev.target.classList.toggle("checked");
-        }
-    });
-</script>
-
-</body>
-</html>
-<!--localStorage ir pārlūkprogrammas atmiņa, kurā var saglabāt datus ilgtermiņā lietotāja datorā.
-Atšķirībā no const un let, pēc F5 dati nepazūd, bet mainīgie katru reizi tiek izdzēsti, kad lapa tiek atsvaidzināta.
-Atšķirībā no parastiem mainīgajiem (let vai const), localStorage saglabā datus arī pēc lapas pārlādes (F5 nospiešanas), tāpēc tajā var glabāt darbu sarakstu, lai tas nepazustu.-->
+    
+        const span = document.createElement("span");
+        span.textContent = text;
+    
+        //Izveidots grutibas limena raditajs uzdevuma kreisaja puse
+        let prioritatepoga = document.createElement("button");
+        prioritatepoga.textContent = priority;
+    
+        //parbaudes lai piskirtu pareizajam grutibas limeni pareizo raditaju
+            if(priority === "zema"){
+                prioritatepoga.className= "btn btn-secondary";
+                
+            }
+            if (priority ===  "videja") {
+                prioritatepoga.className= "btn btn-warning";
+            }
+            if (priority ===  "svariga"){
+                prioritatepoga.className= "btn btn-danger";
+            }                                       
+        
+        // izvitrota testa saglabasana
+          if (done){
+            span.classList.add("text-decoration-line-through", "text-muted");
+          }
+    
+        <!--Funkcija kas pievieno tesktam no ievades iespeju parvesrt vinu svitrainu un citada dizaina-->
+        span.onclick = function (){
+            span.classList.toggle("text-decoration-line-through");
+            span.classList.toggle("text-muted");
+            saveTasks();
+        };
+        
+    
+        // dzesanas poga
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Dzēst";
+        deleteBtn.className = "btn btn-danger btn-sm";
+    
+        deleteBtn.onclick = function () {
+          li.remove();
+          saveTasks();
+        };
+    
+        li.appendChild(prioritatepoga);
+        li.appendChild(span);
+        li.appendChild(deleteBtn);
+        document.getElementById("task-list").appendChild(li); 
+      }
+    
+      // savacam objektus ar visiem parametriem
+      function saveTasks() {
+        var tasks = [];
+        document.querySelectorAll("#task-list li").forEach(task => {
+          const priority = task.querySelector("button").textContent;
+          const textSpan = task.querySelector("span");
+          
+          // formirejam objektus
+          tasks.push({
+            text: textSpan.textContent,
+            priority: priority,
+            done: textSpan.classList.contains("text-decoration-line-through")
+          });
+        });
+        localStorage.setItem("Jons2", JSON.stringify(tasks))
+      }
+      
+      // saglabasanas arpus cikla kad masivs ir pilns
+      document.addEventListener("DOMContentLoaded", loadData);
+    </script>
+    
+    </body>
+    </html>
+    <!--localStorage ir pārlūkprogrammas atmiņa, kurā var saglabāt datus ilgtermiņā lietotāja datorā.
+    Atšķirībā no const un let, pēc F5 dati nepazūd, bet mainīgie katru reizi tiek izdzēsti, kad lapa tiek atsvaidzināta.
+    Atšķirībā no parastiem mainīgajiem (let vai const), localStorage saglabā datus arī pēc lapas pārlādes (F5 nospiešanas), tāpēc tajā var glabāt darbu sarakstu, lai tas nepazustu.-->
