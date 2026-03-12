@@ -63,14 +63,39 @@
                 </div>
 
                 <ul id="task-list" class="list-group"></ul>
-                <br>
-                <p class="text-muted">Atlikuši darbi</p>
+                <div class="container">
+                    <div class="row">
+                        <div class="col">
+                            <p id="work" class="text-muted"></p>
+                        </div>
+                        <div class="col"></div>
+                        <div class="col"></div>
+                        <div class="col"><button onclick="dzesana()" class="btn btn-outline-danger">Notirit pabeigtos</button></div>
+                    </div>
+                </div>
             </form>
         </div>
     </div>
 </div>
 
 <script>
+
+        function activework(){
+            let darbi = 0;
+            document.querySelectorAll("#task-list li span").forEach(task =>{
+                if(!task.classList.contains("text-decoration-line-through")){
+                    darbi++;
+                }
+            });
+            console.log(darbi);
+            let infowork = document.getElementById("work");
+            let darbss = `Aktivie ${darbi} darbi`;
+            infowork.innerText = darbss;
+            localStorage.getItem("darbaskaitli",darbss);
+            meklesana();
+            saveTasks();
+        }
+    
  
         var filtretuzd="Visi";
         function mekletuzd(tips){
@@ -114,6 +139,11 @@
   // LocalStorage data ieladesana
     loadData();
     function loadData() {
+        let saglabatieskaitli = localStorage.getItem("darbaskaitli");
+        if (saglabatieskaitli) {
+            document.getElementById("work").innerText = saglabatieskaitli;
+        }
+        
       // parbaude ja localStorage nekas nav tad izejam so posmu lai nebutu kludas 
       if (!localStorage.getItem("Jons2")) return;
         let text = localStorage.getItem("Jons2");
@@ -142,7 +172,7 @@
     createTaskElement(taskText, priority, false);
     saveTasks();
     input.value = "";
-   
+    activework();
   }
 
 
@@ -178,6 +208,7 @@
     span.onclick = function (){
         span.classList.toggle("text-decoration-line-through");
         span.classList.toggle("text-muted");
+        activework();
         saveTasks();
     };
     
@@ -189,6 +220,7 @@
 
     deleteBtn.onclick = function () {
       li.remove();
+      activework();
       saveTasks();
     };
 
@@ -217,6 +249,8 @@
   
   // saglabasanas arpus cikla kad masivs ir pilns
   document.addEventListener("DOMContentLoaded", loadData);
+  document.addEventListener("DOMContentLoaded", activework);
+  
 </script>
 
 </body>
