@@ -1,260 +1,316 @@
 <!--Autors:Mikus Tolkačevs
     Versija: pirmā
     Trešais autors: Andrejs Šorecs V3-->
-<!DOCTYPE html>
-<html lang="lv">
-<head>
-    <meta charset="UTF-8">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
-    <title>to do list praktiskais</title>
-
-    <style>
-        .card:hover {
-            box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
-        }
-
-        /* Dizains kad izsvītrots */
-        .checked {
-            text-decoration: line-through;
-            color: gray;
-            opacity: 0.7;
-        }
-
-        /* Klikšķināms teksts */
-        .task-text {
-            cursor: pointer;
-            flex-grow: 1;
-        }
-
-        /* Prioritāšu krāsas */
-        .badge.zema { background-color: #6c757d; }
-        .badge.videja { background-color: #0d6efd; }
-        .badge.svariga { background-color: #dc3545; }
-        
-        
-    </style>
-</head>
-
-<body class="bg-blue">
-<div class="container mt-5">
-    <div class="card mx-auto" style="max-width: 670px;">
-        <div class="card-body">
-            <h3 class="text-center mb-3">Mani darbi</h3>
-
-            <form>
-                <div class="input-group mb-3">
-                    <input type="text" class="form-control" id="teksts" placeholder="Ieraksti darbu...">
-
-                    <select class="form-select" id="priority">
-                        <option value="zema">Zema</option>
-                        <option value="videja">Vidēja</option>
-                        <option value="svariga">SVARĪGA!</option>
-                    </select>
-                    <button type="button" class="btn btn-primary" onclick="addTask()">Pievienot</button>
-                </div>
-                <div class="input-group mb-3 ">
-                    <input type="text" class="form-control" oninput="meklesana()" id="tekstss" placeholder="Meklēt uzdevumu..."><br>
-                    <div class="btn-group" role="group">
-                        <button type="button" class="btn btn-outline-secondary" onclick="mekletuzd('Visi')">Visi</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="mekletuzd('Aktivie')">Aktīvie</button>
-                        <button type="button" class="btn btn-outline-secondary" onclick="mekletuzd('Pabeigtie')">Pabeigtie</button>
-                        </div>
-                </div>
-
-                <ul id="task-list" class="list-group"></ul>
-                <div class="container">
-                    <div class="row">
-                        <div class="col">
-                            <p id="work" class="text-muted"></p>
-                        </div>
-                        <div class="col"></div>
-                        <div class="col"></div>
-                        <div class="col"><button onclick="dzesana()" class="btn btn-outline-danger">Notirit pabeigtos</button></div>
+    <!DOCTYPE html>
+    <html lang="lv">
+    <head>
+        <meta charset="UTF-8">
+        <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet">
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/js/bootstrap.bundle.min.js"></script>
+        <title>to do list praktiskais</title>
+    
+        <style>
+            .card:hover {
+                box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2);
+            }
+    
+            /* Dizains kad izsvītrots */
+            .checked {
+                text-decoration: line-through;
+                color: gray;
+                opacity: 0.7;
+            }
+    
+            /* Klikšķināms teksts */
+            .task-text {
+                cursor: pointer;
+                flex-grow: 1;
+            }
+    
+            /* Prioritāšu krāsas */
+            .badge.zema { background-color: #6c757d; }
+            .badge.videja { background-color: #0d6efd; }
+            .badge.svariga { background-color: #dc3545; }
+            
+            
+        </style>
+    </head>
+    
+    <body class="bg-blue">
+    <div class="container mt-5">
+        <div class="card mx-auto" style="max-width: 670px;">
+            <div class="card-body">
+                <h3 class="text-center mb-3">Mani darbi</h3>
+    
+                <form>
+                    <div class="input-group mb-3">
+                        <input type="text" class="form-control" id="teksts" placeholder="Ieraksti darbu...">
+    
+                        <select class="form-select" id="priority">
+                            <option value="zema">Zema</option>
+                            <option value="videja">Vidēja</option>
+                            <option value="svariga">SVARĪGA!</option>
+                        </select>
+                        <button type="button" class="btn btn-primary" onclick="addTask()">Pievienot</button>
                     </div>
-                </div>
-            </form>
+                    <div class="input-group mb-3 ">
+                        <input type="text" class="form-control" oninput="meklesana()" id="tekstss" placeholder="Meklēt uzdevumu..."><br>
+                        <div class="btn-group" role="group">
+                            <button type="button" class="btn btn-outline-secondary" onclick="mekletuzd('Visi')">Visi</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="mekletuzd('Aktivie')">Aktīvie</button>
+                            <button type="button" class="btn btn-outline-secondary" onclick="mekletuzd('Pabeigtie')">Pabeigtie</button>
+                            </div>
+                    </div>
+    
+                    <ul id="task-list" class="list-group"></ul>
+                    <div class="container">
+                        <div class="row">
+                            <div class="col">
+                                <p id="work" class="text-muted"></p>
+                            </div>
+                            <div class="col"></div>
+                            <div class="col"></div>
+                            <div class="col"><button onclick="dzesana()" class="btn btn-outline-danger">Notirit pabeigtos</button></div>
+                        </div>
+                    </div>
+                </form>
+            </div>
         </div>
     </div>
-</div>
-
-<script>
-
-        function activework(){
-            let darbi = 0;
-            document.querySelectorAll("#task-list li span").forEach(task =>{
-                if(!task.classList.contains("text-decoration-line-through")){
-                    darbi++;
-                }
-            });
-            console.log(darbi);
-            let infowork = document.getElementById("work");
-            let darbss = `Aktivie ${darbi} darbi`;
-            infowork.innerText = darbss;
-            localStorage.getItem("darbaskaitli",darbss);
-            meklesana();
-            saveTasks();
-        }
     
- 
-        var filtretuzd="Visi";
-        function mekletuzd(tips){
-            filtretuzd= tips;
-            console.log(filtretuzd);
-            meklesana();
-        }  
-          
-        
-        function meklesana(){
-            var meklet = document.getElementById("tekstss").value;
-            var li = document.getElementsByTagName("li");
+    <script>
+    
+            function dzesana(){
+              document.querySelectorAll("#task-list li span").forEach(dzest =>{
+                if(dzest.classList.contains("text-decoration-line-through")){
+                  dzest.parentElement.remove();
+                }
+              });
+              saveTasks();
+              activework();
+            }
 
-            for(var i=0; i<li.length; i++){
-                var span = li[i].getElementsByTagName("span")[0];
-                var tekstssakrit = span.innerHTML.toLowerCase().indexOf(meklet) > -1;
-                
-                var isdone = span.classList.contains("text-decoration-line-through","text-muted");
-                var filtrssakrit = false;
-                
-                if(filtretuzd === 'Pabeigtie' && isdone){
-                    filtrssakrit = true;
+            //aktivo darbu funkcija
+            function activework(){
+                let darbi = 0;  //aktivo darbu skaits
+                document.querySelectorAll("#task-list li span").forEach(task =>{  // tiek palaists foreach cikls kas parbauda katru li elementu
+                    if(!task.classList.contains("text-decoration-line-through")){ // ja darbs nav pabeigts 
+                        darbi++;  // pieskaita aktivo darbu skaitu
+                    }
+                });
+                let infowork = document.getElementById("work");
+                let darbss = `Aktivie ${darbi} darbi`;
+                infowork.innerText = darbss;  //Tiek mainits p elementa teksts kurs rada aktivo darbu skaitu
+                localStorage.setItem("darbaskaitli",darbss);  //tiek saglabats localstorage aktivo darbu skaitu
+                meklesana();
+                saveTasks();
+            }
+        
+     
+            var filtretuzd="Visi";  // Pievienots sakošais tips
+            function mekletuzd(tips){ 
+                filtretuzd= tips;
+                meklesana();
+            }  
+              
+            
+            function meklesana(){
+                var meklet = document.getElementById("tekstss").value;
+                var li = document.getElementsByTagName("li");
+    
+                for(var i=0; i<li.length; i++){ //cikls  kas parbauda elementu sarakstu un atrod vinu un parbaudes pogam lai atrastu visus, aktivos un pabeigtos darbus
+                    var span = li[i].getElementsByTagName("span")[0];
+                    var tekstssakrit = span.innerHTML.toLowerCase().indexOf(meklet) > -1;
+                    
+                    var isdone = span.classList.contains("text-decoration-line-through","text-muted");
+                    var filtrssakrit = false;
+                    
+                    if(filtretuzd === 'Pabeigtie' && isdone){
+                        filtrssakrit = true;
+                    }
+                    else if(filtretuzd === 'Aktivie' && !isdone){
+                        filtrssakrit = true;
+                    }
+                    else if(filtretuzd === 'Visi'){
+                        filtrssakrit = true;
+                    }
+                    
+                    
+                    if (tekstssakrit && filtrssakrit){
+                        li[i].classList.remove("d-none")
+                    } else {
+                        li[i].classList.add("d-none")
+                    }
                 }
-                else if(filtretuzd === 'Aktivie' && !isdone){
-                    filtrssakrit = true;
-                }
-                else if(filtretuzd === 'Visi'){
-                    filtrssakrit = true;
-                }
                 
-                
-                if (tekstssakrit && filtrssakrit){
-                    li[i].classList.remove("d-none")
-                } else {
-                    li[i].classList.add("d-none")
-                }
             }
             
-        }
-        
-  // LocalStorage data ieladesana
-    loadData();
-    function loadData() {
-        let saglabatieskaitli = localStorage.getItem("darbaskaitli");
-        if (saglabatieskaitli) {
-            document.getElementById("work").innerText = saglabatieskaitli;
-        }
-        
-      // parbaude ja localStorage nekas nav tad izejam so posmu lai nebutu kludas 
-      if (!localStorage.getItem("Jons2")) return;
-        let text = localStorage.getItem("Jons2");
-        let obj = JSON.parse(text);
-
-        document.getElementById("task-list").innerHTML = "";
-
-        obj.forEach(objekts => {
-            createTaskElement(objekts.text, objekts.priority, objekts.done);
-        });
-    }
-
-
-    //funkcija prieks pogas (Pievienot)
-  function addTask() {
-    const input = document.getElementById("teksts");
-    const priority = document.getElementById("priority").value;
-    const taskText = input.value.trim();
-
-    if (taskText === "") {
-      alert("Ievadi uzdevumu!");
-      return;
-    }
-
-    // pie veidosanas jauna taska pieskiram vinam tekstu, izveleto prioritati un false (izpildits darbs vai ne)
-    createTaskElement(taskText, priority, false);
-    saveTasks();
-    input.value = "";
-    activework();
-  }
-
-
-  function createTaskElement(text, priority, done) {
-    const li = document.createElement("li");
-    li.className = "list-group-item d-flex justify-content-between align-items-center";
-
-    const span = document.createElement("span");
-    span.textContent = text;
-
-    //Izveidots grutibas limena raditajs uzdevuma kreisaja puse
-    let prioritatepoga = document.createElement("button");
-    prioritatepoga.textContent = priority;
-
-    //parbaudes lai piskirtu pareizajam grutibas limeni pareizo raditaju
-        if(priority === "zema"){
-            prioritatepoga.className= "btn btn-secondary";
+      // LocalStorage data ieladesana
+        loadData();
+        function loadData() {
+            let saglabatieskaitli = localStorage.getItem("darbaskaitli");
+            if (saglabatieskaitli) {
+                document.getElementById("work").innerText = saglabatieskaitli;
+            }
             
-        }
-        if (priority ===  "videja") {
-            prioritatepoga.className= "btn btn-warning";
-        }
-        if (priority ===  "svariga"){
-            prioritatepoga.className= "btn btn-danger";
-        }                                       
+          // parbaude ja localStorage nekas nav tad izejam so posmu lai nebutu kludas 
+          if (!localStorage.getItem("Jons2")) return;
+            let text = localStorage.getItem("Jons2");
+            let obj = JSON.parse(text);
     
-    // izvitrota testa saglabasana
-      if (done){
-        span.classList.add("text-decoration-line-through", "text-muted");
-      }
-
-    <!--Funkcija kas pievieno tesktam no ievades iespeju parvesrt vinu svitrainu un citada dizaina-->
-    span.onclick = function (){
-        span.classList.toggle("text-decoration-line-through");
-        span.classList.toggle("text-muted");
-        activework();
+            document.getElementById("task-list").innerHTML = "";
+    
+            obj.forEach(objekts => {
+                createTaskElement(objekts.text, objekts.priority, objekts.done);
+            });
+        }
+    
+    
+        //funkcija prieks pogas (Pievienot)
+      function addTask() {
+        const input = document.getElementById("teksts");
+        const priority = document.getElementById("priority").value;
+        const taskText = input.value.trim();
+    
+        if (taskText === "") {
+          alert("Ievadi uzdevumu!");
+          return;
+        }
+    
+        // pie veidosanas jauna taska pieskiram vinam tekstu, izveleto prioritati un false (izpildits darbs vai ne)
+        createTaskElement(taskText, priority, false);
         saveTasks();
-    };
+        input.value = "";
+        activework();
+      }
     
+    
+      function createTaskElement(text, priority, done) {
+        const li = document.createElement("li");
+        li.className = "list-group-item d-flex justify-content-between align-items-center";
+    
+        const span = document.createElement("span");
+        span.textContent = text;
+    
+        //Izveidots grutibas limena raditajs uzdevuma kreisaja puse
+        let prioritatepoga = document.createElement("button");
+        prioritatepoga.textContent = priority;
+    
+        //parbaudes lai piskirtu pareizajam grutibas limeni pareizo raditaju
+            if(priority === "zema"){
+                prioritatepoga.className= "btn btn-secondary";
+                
+            }
+            if (priority ===  "videja") {
+                prioritatepoga.className= "btn btn-warning";
+            }
+            if (priority ===  "svariga"){
+                prioritatepoga.className= "btn btn-danger";
+            }                                       
+        
+        // izvitrota testa saglabasana
+          if (done){
+            span.classList.add("text-decoration-line-through", "text-muted");
+          }
+    
+        <!--Funkcija kas pievieno tesktam no ievades iespeju parvesrt vinu svitrainu un citada dizaina-->
+        span.onclick = function (){
+            span.classList.toggle("text-decoration-line-through");
+            span.classList.toggle("text-muted");
+            activework();
+            saveTasks();
+        };
+        
+        //Veidojas div ar btn group clasi
+        let Pogugrupa = document.createElement("div");
+        Pogugrupa.className = "btn-group btn-group-sm"
 
-    // dzesanas poga
-    const deleteBtn = document.createElement("button");
-    deleteBtn.textContent = "Dzēst";
-    deleteBtn.className = "btn btn-danger btn-sm";
+        // labosana poga
+        let labotBtn = document.createElement("button");
+        labotBtn.type = "button";
+        labotBtn.textContent = "Labot";
+        labotBtn.className = "btn btn-outline-info";
+    
+        labotBtn.onclick = function (){
+          if (labotBtn.textContent === "Labot"){
+            let input = document.createElement("input");
+            input.type = "text";
+            input.className = "form-control form-control-sm d-inline-block w-50";
+            input.value = span.textContent;
 
-    deleteBtn.onclick = function () {
-      li.remove();
-      activework();
-      saveTasks();
-    };
+            li.replaceChild(input, span);
 
-    li.appendChild(prioritatepoga);
-    li.appendChild(span);
-    li.appendChild(deleteBtn);
-    document.getElementById("task-list").appendChild(li); 
-  }
+            labotBtn.textContent = "Saglabāt";
+            labotBtn.className = "btn btn-success btn-sm";
 
-  // savacam objektus ar visiem parametriem
-  function saveTasks() {
-    var tasks = [];
-    document.querySelectorAll("#task-list li").forEach(task => {
-      const priority = task.querySelector("button").textContent;
-      const textSpan = task.querySelector("span");
+          } else {
+            //atrodam input elemntu
+              let inputelements = li.querySelector("input");
+              //dabujam tekstu vertibu
+              let jaunavertiba = inputelements.value.trim();
+
+              if(jaunavertiba !== ""){
+                //ieliekam jaunu tekstu span elementa
+                span.textContent = jaunavertiba;
+                // mainam elemntu vieta
+                li.replaceChild(span, inputelements);
+
+                labotBtn.textContent = "Labot";
+                labotBtn.className = "btn btn-outline-info btn-sm";
+                saveTasks();
+                activework();
+              }
+              else {
+                alert("Ievadiet uzdevumuu ludzu");
+              }
+          } 
+        }
+
+        // dzesanas poga
+        const deleteBtn = document.createElement("button");
+        deleteBtn.textContent = "Dzēst";
+        deleteBtn.className = "btn btn-danger";
+    
+        deleteBtn.onclick = function () {
+          li.remove();
+          activework();
+          saveTasks();
+        };
+    
+        Pogugrupa.appendChild(labotBtn);
+        Pogugrupa.appendChild(deleteBtn);
+
+        li.appendChild(prioritatepoga);
+        li.appendChild(span);
+        li.appendChild(Pogugrupa);
+        document.getElementById("task-list").appendChild(li); 
+      }
+    
+      // savacam objektus ar visiem parametriem
+      function saveTasks() {
+        var tasks = [];
+        document.querySelectorAll("#task-list li").forEach(task => {
+          const priority = task.querySelector("button").textContent;
+          const textSpan = task.querySelector("span");
+          
+          // formirejam objektus
+          tasks.push({
+            text: textSpan.textContent,
+            priority: priority,
+            done: textSpan.classList.contains("text-decoration-line-through")
+          });
+        });
+        localStorage.setItem("Jons2", JSON.stringify(tasks))
+      }
       
-      // formirejam objektus
-      tasks.push({
-        text: textSpan.textContent,
-        priority: priority,
-        done: textSpan.classList.contains("text-decoration-line-through")
-      });
-    });
-    localStorage.setItem("Jons2", JSON.stringify(tasks))
-  }
-  
-  // saglabasanas arpus cikla kad masivs ir pilns
-  document.addEventListener("DOMContentLoaded", loadData);
-  document.addEventListener("DOMContentLoaded", activework);
-  
-</script>
-
-</body>
-</html>
-<!--localStorage ir pārlūkprogrammas atmiņa, kurā var saglabāt datus ilgtermiņā lietotāja datorā.
-Atšķirībā no const un let, pēc F5 dati nepazūd, bet mainīgie katru reizi tiek izdzēsti, kad lapa tiek atsvaidzināta.
-Atšķirībā no parastiem mainīgajiem (let vai const), localStorage saglabā datus arī pēc lapas pārlādes (F5 nospiešanas), tāpēc tajā var glabāt darbu sarakstu, lai tas nepazustu.-->
+      // saglabasanas arpus cikla kad masivs ir pilns
+      document.addEventListener("DOMContentLoaded", loadData);
+      document.addEventListener("DOMContentLoaded", activework);
+      
+    </script>
+    
+    </body>
+    </html>
+    <!--localStorage ir pārlūkprogrammas atmiņa, kurā var saglabāt datus ilgtermiņā lietotāja datorā.
+    Atšķirībā no const un let, pēc F5 dati nepazūd, bet mainīgie katru reizi tiek izdzēsti, kad lapa tiek atsvaidzināta.
+    Atšķirībā no parastiem mainīgajiem (let vai const), localStorage saglabā datus arī pēc lapas pārlādes (F5 nospiešanas), tāpēc tajā var glabāt darbu sarakstu, lai tas nepazustu.-->
